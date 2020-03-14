@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
         .catch(err => res.json(err));
 });
 
-// http://localhost:3000/api/new
+// http://localhost:3000/api/ejercicios/new
 router.post('/new', [
     check(['titulo', 'duracion', 'repeticiones'], 'Debes completar todos los campos (titulo, duracion, repeticiones)').notEmpty(),
     check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
@@ -34,7 +34,7 @@ router.post('/new', [
         .catch(err => res.json(err));
 });
 
-// http://localhost:3000/api/edit
+// http://localhost:3000/api/ejercicios/edit
 router.put('/edit', [
     check(['titulo', 'duracion', 'repeticiones', 'id'], 'Debes completar todos los campos (titulo, duracion, repeticiones, id)').notEmpty(),
     check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
@@ -56,7 +56,7 @@ router.put('/edit', [
         .catch(err => res.json(err));
 });
 
-// http://localhost:3000/api/delete
+// http://localhost:3000/api/ejercicios/delete
 router.delete('/delete/:ejercicioId', [
     check('ejercicioId', 'El id del ejercicio a borrar debe ser un número y además positivo').custom(value => /^[1-9][0-9]*$/.test(value))
 ], (req, res) => {

@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
 // http://localhost:3000/api/clientes/new
 router.post('/new', [
-    check(['nombre', 'apellidos', 'direccion', 'email', 'edad', 'sexo', 'cuota', 'fecha_nacimiento', 'dni', 'fk_profesor'], 'Faltan campos por rellenar').notEmpty(),
+    check(['nombre', 'apellidos', 'direccion', 'email', 'edad', 'sexo', 'cuota', 'fecha_nacimiento', 'dni', 'fk_profesor'], 'Completa todos los campos (nombre, apellidos, direccion, email, edad, sexo, cuota, fecha_nacimiento, dni, fk_profesor)').notEmpty(),
     check('nombre', 'El nombre sólo puede contener letras y debe tener entre 3 y 20 caracteres').isAlpha().isLength({ min: 3, max: 20 }),
     check('apellidos', 'Los apellidos sólo pueden contener letras y deben tener entre 3 y 30 caracteres').isAlpha().isLength({ min: 3, max: 30 }),
     check('direccion', 'La direccion sólo puede contener letras y/o números y debe tener entre 2 y 40 caracteres').isAlphanumeric().isLength({ min: 2, max: 40 }),
@@ -44,7 +44,7 @@ router.post('/new', [
 
 // http://localhost:3000/api/clientes/edit
 router.put('/edit', [
-    check(['nombre', 'apellidos', 'direccion', 'email', 'edad', 'sexo', 'cuota', 'fecha_nacimiento', 'dni', 'fk_profesor', 'id'], 'Faltan campos por rellenar').notEmpty(),
+    check(['nombre', 'apellidos', 'direccion', 'email', 'edad', 'sexo', 'cuota', 'fecha_nacimiento', 'dni', 'fk_profesor', 'id'], 'Completa todos los campos (nombre, apellidos, direccion, email, edad, sexo, cuota, fecha_nacimiento, dni, fk_profesor, id)').notEmpty(),
     check('nombre', 'El nombre debe tener entre 3 y 20 caracteres').isAlphanumeric().isLength({ min: 3, max: 20 }),
     check('apellidos', 'Los apellidos deben tener entre 3 y 30 caracteres').isAlphanumeric().isLength({ min: 3, max: 30 }),
     check('direccion', 'La direccion sólo puede contener letras y/o números y debe tener entre 2 y 40 caracteres').isAlphanumeric().isLength({ min: 2, max: 40 }),
