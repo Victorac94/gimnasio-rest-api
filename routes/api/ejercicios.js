@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
 // http://localhost:3000/api/new
 router.post('/new', [
-    check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isLength({ min: 1, max: 50 }),
+    check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
     check('duracion', 'La duracion del ejercicio debe estar en un formato hh:mm:ss correcto').custom(value => /^([0-9]{2}:[0-6]{2}:[0-6]{2})$/.test(value)),
     check('repeticiones', 'Las repeticiones deben ser un número').isNumeric()
 ], (req, res) => {
@@ -35,7 +35,7 @@ router.post('/new', [
 
 // http://localhost:3000/api/edit
 router.put('/edit', [
-    check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isLength({ min: 1, max: 50 }),
+    check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
     check('duracion', 'La duracion del ejercicio debe estar en un formato hh:mm:ss correcto').custom(value => /^([0-9]{2}:[0-6]{2}:[0-6]{2})$/.test(value)),
     check('repeticiones', 'Las repeticiones deben ser un número').isNumeric(),
     check('id', 'El id del ejercicio a editar debe ser un número positivo').custom(value => /^[1-9][0-9]*$/.test(value))
@@ -55,8 +55,16 @@ router.put('/edit', [
 });
 
 // http://localhost:3000/api/delete
-router.delete('/delete/:ejercicioId', (req, res) => {
+router.delete('/delete/:ejercicioId', [
+    check('ejercicioId', 'El id del ejercicio a borrar debe ser un número y además positivo').custom(value => /^[1-9][0-9]*$/.test(value))
+], (req, res) => {
     // Delete exercise
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+        return res.status(422).json(validationErrors.array());
+    }
+
     const table = req.baseUrl.split('/')[2]; // Get table name from url
 
     Table.deleteData(table, req.params.ejercicioId)

@@ -53,8 +53,15 @@ router.put('/edit', [
 });
 
 // http://localhost:3000/api/profesores/delete
-router.delete('/delete/:profesorId', (req, res) => {
+router.delete('/delete/:profesorId', [
+    check('profesorId', 'El id del profesor a borrar debe ser un número y además positivo').custom(value => /^[1-9][0-9]*$/.test(value))
+], (req, res) => {
     // Delete teacher
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+        return res.status(422).json(validationErrors.array());
+    }
     const table = req.baseUrl.split('/')[2]; // Get table name from url
 
     Table.deleteData(table, req.params.profesorId)
