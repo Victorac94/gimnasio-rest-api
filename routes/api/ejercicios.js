@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 
 // http://localhost:3000/api/new
 router.post('/new', [
+    check(['titulo', 'duracion', 'repeticiones'], 'Debes completar todos los campos (titulo, duracion, repeticiones)').notEmpty(),
     check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
     check('duracion', 'La duracion del ejercicio debe estar en un formato hh:mm:ss correcto').custom(value => /^([0-9]{2}:[0-6]{2}:[0-6]{2})$/.test(value)),
     check('repeticiones', 'Las repeticiones deben ser un número').isNumeric()
@@ -35,6 +36,7 @@ router.post('/new', [
 
 // http://localhost:3000/api/edit
 router.put('/edit', [
+    check(['titulo', 'duracion', 'repeticiones', 'id'], 'Debes completar todos los campos (titulo, duracion, repeticiones, id)').notEmpty(),
     check('titulo', 'El titulo debe tener entre 1 y 50 caracteres').isAlphanumeric().isLength({ min: 1, max: 50 }),
     check('duracion', 'La duracion del ejercicio debe estar en un formato hh:mm:ss correcto').custom(value => /^([0-9]{2}:[0-6]{2}:[0-6]{2})$/.test(value)),
     check('repeticiones', 'Las repeticiones deben ser un número').isNumeric(),

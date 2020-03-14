@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 
 // http://localhost:3000/api/profesores/new
 router.post('/new', [
+    check(['nombre', 'experiencia'], 'Debes completar todos los campos (nombre, experiencia)').notEmpty(),
     check('nombre', 'El nombre debe tener entre 1 y 30 caracteres').isLength({ min: 1, max: 30 }).isAlphanumeric(),
     check('experiencia', 'La experiencia debe ser un número positivo').custom(value => /^[1-9][0-9]*$/.test(value))
 ], (req, res) => {
@@ -34,6 +35,7 @@ router.post('/new', [
 
 // http://localhost:3000/api/profesores/edit
 router.put('/edit', [
+    check(['nombre', 'experiencia', 'id'], 'Debes completar todos los campos (nombre, experiencia, id)').notEmpty(),
     check('nombre', 'El nombre debe tener entre 1 y 30 caracteres').isLength({ min: 1, max: 30 }).isAlphanumeric(),
     check('experiencia', 'La experiencia debe ser un número positivo').custom(value => /^[1-9][0-9]*$/.test(value)),
     check('id', 'El id del profesor a editar debe ser un número positivo').custom(value => /^[1-9][0-9]*$/.test(value))
