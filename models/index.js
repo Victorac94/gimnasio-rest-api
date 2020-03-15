@@ -36,38 +36,72 @@ const formatData = (method, data) => {
 }
 
 // Get all rows from a table
-const getAll = (table) => {
+const getAll = async (table) => {
     // Creo la sentencia
     const query = `SELECT * FROM ${table}`;
-    // Le paso la sentencia a ejecutar
-    return executeQuery(query, null);
+    try {
+        // Le paso la sentencia a ejecutar
+        return await executeQuery(query, null);
+    } catch (err) {
+        return { 'error': 'Se ha producido un error', ...err };
+    }
 };
 
 // Add row to a table
-const addData = (table, data) => {
+const addData = async (table, data) => {
     // Recojo los arrays en variables. Destructuring
     const [params, values, placeholders] = formatData('add', data);
     // Creo la sentencia
     const query = `INSERT INTO ${table} (${params}) VALUES (${placeholders})`;
-    // Le paso la sentencia con los valores a añadir
-    return executeQuery(query, values.split(', '));
+    try {
+        // Le paso la sentencia con los valores a añadir
+        const result = await executeQuery(query, values.split(', '));
+
+        if (response.affectedRows !== 0) {
+            return { 'success': `Datos añadidos con éxito en la tabla ${table}`, 'addedData': data, ...result }
+        } else {
+            return response;
+        }
+    } catch (err) {
+        return { 'error': 'Se ha producido un error', ...err };
+    }
 }
 
 // Edit row of a table
-const editData = (table, data) => {
+const editData = async (table, data) => {
     const [params, values] = formatData('edit', data);
     // Creo la sentencia
     const query = `UPDATE ${table} SET ${params}`;
-    // Le paso la sentencia con los valores a modificar
-    return executeQuery(query, values.split(', '));
+    try {
+        // Le paso la sentencia con los valores a modificar
+        const response = await executeQuery(query, values.split(', '));
+
+        if (response.affectedRows !== 0) {
+            return { 'success': `Datos editados con éxito en la tabla ${table}`, 'editedData': data, ...response }
+        } else {
+            return response;
+        }
+    } catch (err) {
+        return { 'error': 'Se ha producido un error', ...err };
+    }
 }
 
 // Delete row from a table
-const deleteData = (table, id) => {
+const deleteData = async (table, id) => {
     // Creo la sentencia
     const query = `DELETE FROM ${table} WHERE Id = ${id}`;
-    // Le paso la sentencia con el id del row a borrar
-    return executeQuery(query, [id]);
+    try {
+        // Le paso la sentencia con el id del row a borrar
+        const response = await executeQuery(query, [id]);
+
+        if (response.affectedRows !== 0) {
+            return { 'success': `Datos borrados con éxito en la tabla ${table}`, 'deletedID': id, ...response }
+        } else {
+            return response;
+        }
+    } catch (err) {
+        return { 'error': 'Se ha producido un error', ...err };
+    }
 };
 
 // Execute query to DB

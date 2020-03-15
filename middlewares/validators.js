@@ -1,4 +1,4 @@
-exports.isDNI = dni => {
+isDNI = dni => {
     const regexp = /^\d{8}[a-zA-Z]$/;
 
     if (regexp.test(dni) === true) {
@@ -16,3 +16,19 @@ exports.isDNI = dni => {
         return false;
     }
 };
+
+checkIsAlpha = str => {
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return /^[a-zA-Z ]+$/.test(str)
+}
+
+checkIsAlphanumeric = str => {
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return /^[a-zA-Z0-9 ªº]+$/.test(str)
+}
+
+module.exports = {
+    isDNI: isDNI,
+    checkIsAlpha: checkIsAlpha,
+    checkIsAlphanumeric: checkIsAlphanumeric
+}
